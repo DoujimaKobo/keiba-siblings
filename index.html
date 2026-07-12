@@ -150,12 +150,18 @@
   // 同母グループを先に（希少で重要なので）
   found.sort((a, b) => (a.type === 'dam' ? 0 : 1) - (b.type === 'dam' ? 0 : 1));
 
+  const relationLabel = g => {
+    if (g.type === 'sire') return '異母兄弟（' + g.label + '）';
+    if (g.full) return '全兄弟（父：' + g.members[0].sire + '／母：' + g.label + '）';
+    return '異父兄弟（' + g.label + '）';
+  };
+
   // 馬名にバッジを付ける
   found.forEach(g => {
     g.members.forEach(h => {
       const b = document.createElement('span');
       b.className = 'kyodai-badge';
-      b.textContent = (h.number ? h.number + '番 ' : '') + (g.type === 'dam' ? '母' : '父') + ':' + g.label;
+      b.textContent = relationLabel(g);
       b.style.cssText = 'display:inline-block;margin-left:6px;padding:1px 6px;' +
         'border-radius:9px;font-size:11px;font-weight:bold;color:#fff;' +
         'vertical-align:middle;background:' + g.color + ';';
@@ -168,24 +174,24 @@
   panel.id = 'kyodai-panel';
   panel.style.cssText = 'position:fixed;top:10px;right:10px;z-index:99999;' +
     'background:#fff;color:#222;border:2px solid #333;border-radius:8px;' +
-    'padding:10px 14px;max-width:340px;max-height:70vh;overflow:auto;' +
+    'padding:10px 14px;max-width:380px;max-height:70vh;overflow:auto;' +
     'font-size:13px;line-height:1.6;box-shadow:0 4px 16px rgba(0,0,0,.3);' +
     'font-family:sans-serif;text-align:left;';
+  const damGroups = found.filter(g => g.type === 'dam');
+  const sireGroups = found.filter(g => g.type === 'sire');
+  const groupHtml = g => '<div style="margin:8px 0;border-left:4px solid ' + g.color + ';padding:5px 8px;">' +
+    '<b>' + relationLabel(g) + '</b><br>' +
+    g.members.map(m => '<span style="display:inline-block;margin:3px 8px 0 0;">' +
+      '<b style="font-size:16px;">' + (m.number ? m.number + '番' : '') + '</b> ' + m.name + '</span>').join('') + '</div>';
   let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-    '<strong>兄弟チェック（' + horses.length + '頭）</strong>' +
+    '<strong>兄弟馬あり：' + found.length + '組</strong>' +
     '<button id="kyodai-close" style="border:none;background:#eee;border-radius:4px;cursor:pointer;padding:2px 8px;">×</button></div>';
   if (!found.length) {
     html += 'このレースに同父・同母の馬はいません。';
   } else {
-    found.forEach(g => {
-      const typeLabel = g.type === 'dam'
-        ? (g.full ? '全兄弟' : '同母（兄弟／異父兄弟）')
-        : '同父（異母兄弟）';
-      html += '<div style="margin-bottom:8px;border-left:4px solid ' + g.color + ';padding-left:8px;">' +
-        '<b>' + (g.type === 'dam' ? '母' : '父') + '：' + g.label + '</b><br>' +
-        '<span style="color:#666;font-size:11px;">' + typeLabel + '</span><br>' +
-        g.members.map(m => (m.number ? m.number + '番 ' : '') + m.name).join('、') + '</div>';
-    });
+    html += damGroups.map(groupHtml).join('');
+    if (sireGroups.length) html += '<details><summary style="cursor:pointer;color:#555;">同父（異母兄弟） ' + sireGroups.length + '組を表示</summary>' +
+      sireGroups.map(groupHtml).join('') + '</details>';
   }
   panel.innerHTML = html;
   document.body.appendChild(panel);
