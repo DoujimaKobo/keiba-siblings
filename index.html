@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JRA出馬表 兄弟チェッカー</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: "Hiragino Sans", "Yu Gothic", sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; line-height: 1.8; }
+  h1 { font-size: 1.5rem; border-bottom: 3px solid #2e7d32; padding-bottom: 8px; }
+  .bookmarklet { display: inline-block; background: #2e7d32; color: #fff; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; cursor: grab; }
+  .bookmarklet:active { cursor: grabbing; }
+  .box { background: rgba(128,128,128,.1); border-radius: 8px; padding: 12px 16px; margin: 16px 0; }
+  ol li { margin-bottom: 8px; }
+  code, textarea { font-family: Consolas, monospace; }
+  textarea { width: 100%; height: 90px; font-size: 12px; }
+  .note { font-size: .85rem; color: #888; }
+  button { padding: 6px 14px; border-radius: 6px; border: 1px solid #999; background: transparent; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>🐎 JRA出馬表 兄弟チェッカー</h1>
+<p>JRA公式の出馬表ページで、同じレースに <b>全兄弟・異父兄弟（同母）・異母兄弟（同父）</b> の馬が出走しているかを一発でチェックするブックマークレットです。該当馬にはバッジが付き、右上に一覧パネルが表示されます。もう一度実行すると表示が消えます。</p>
+
+<h2>使い方</h2>
+<ol>
+  <li>下のボタンを<b>ブックマークバーにドラッグ＆ドロップ</b>して登録する（クリックしても動きません）。<br>
+    <p><a id="bml" class="bookmarklet" href="#">🐎 兄弟チェック</a></p>
+  </li>
+  <li><a href="https://www.jra.go.jp/keiba/calendar/" target="_blank" rel="noopener">JRA公式サイト</a>で出馬表ページ（血統＝父・母が表示されるページ）を開く。</li>
+  <li>登録したブックマークをクリックする。</li>
+</ol>
+
+<div class="box">
+  <b>ドラッグ登録ができない場合（スマホ等）</b><br>
+  下のコードをコピーして、手動で作成したブックマークの URL 欄に貼り付けてください。<br>
+  <textarea id="src" readonly></textarea>
+  <button id="copy">コピー</button> <span id="copied"></span>
+</div>
+
+<h2>判定ルール</h2>
+<ul>
+  <li><b>全兄弟</b> — 父も母も同じ</li>
+  <li><b>兄弟／異父兄弟</b> — 母が同じ（競馬では母基準が「兄弟」）</li>
+  <li><b>異母兄弟</b> — 父が同じ（人気種牡馬の産駒同士なのでよく見つかります）</li>
+</ul>
+
+<p class="note">データはあなたのブラウザに表示中の JRA 出馬表ページから読み取るだけで、外部への通信は一切行いません。JRA のページ構造変更で動かなくなる可能性があります。</p>
+
+<script>
+fetch('siblings.js')
+  .then(r => r.text())
+  .then(code => {
+    const href = 'javascript:' + encodeURIComponent(code);
+    document.getElementById('bml').href = href;
+    document.getElementById('src').value = href;
+  })
+  .catch(() => {
+    document.getElementById('src').value = 'siblings.js の読み込みに失敗しました。GitHub Pages 等の HTTP サーバー経由で開いてください。';
+  });
+document.getElementById('copy').onclick = () => {
+  navigator.clipboard.writeText(document.getElementById('src').value)
+    .then(() => document.getElementById('copied').textContent = '✓ コピーしました');
+};
+document.getElementById('bml').onclick = e => e.preventDefault();
+</script>
+</body>
+</html>
