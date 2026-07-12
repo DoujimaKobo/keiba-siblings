@@ -140,8 +140,7 @@
     html += 'このレースに同父・同母の馬はいません。';
   } else {
     html += damGroups.map(groupHtml).join('');
-    if (sireGroups.length) html += '<details><summary style="cursor:pointer;color:#555;">同父（異母兄弟） ' + sireGroups.length + '組を表示</summary>' +
-      sireGroups.map(groupHtml).join('') + '</details>';
+    html += sireGroups.map(groupHtml).join('');
   }
   panel.innerHTML = html;
   document.body.appendChild(panel);
