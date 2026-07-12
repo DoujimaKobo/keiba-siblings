@@ -69,6 +69,8 @@
     document.querySelectorAll('td.horse').forEach(td => {
       const nameEl = td.querySelector('.name a, .name');
       const name = nameEl ? nameEl.textContent.trim() : null;
+      const numberEl = td.closest('tr').querySelector('td.num');
+      const number = numberEl ? numberEl.childNodes[0].textContent.trim() : null;
       const sireEl = td.querySelector('.family_line .sire');
       const sire = sireEl ? sireEl.textContent.replace(/^父：/, '').trim() : null;
       const mareLi = td.querySelector('.family_line .mare');
@@ -79,7 +81,7 @@
         if (bm) bm.remove();
         dam = c.textContent.replace(/^母：/, '').trim();
       }
-      if (name && (sire || dam)) horses.push({ name, sire, dam, nameEl });
+      if (name && (sire || dam)) horses.push({ name, number, sire, dam, nameEl });
     });
   };
 
@@ -103,7 +105,9 @@
           const dam = damCell ? damCell.textContent.trim() : null;
           const sire = sireCell ? sireCell.textContent.trim() : null;
           const name = a.textContent.trim();
-          if (name && (sire || dam)) horses.push({ name, sire, dam, nameEl: a });
+          const numberEl = a.closest('tr').querySelector('td.horseNum');
+          const number = numberEl ? numberEl.textContent.trim() : null;
+          if (name && (sire || dam)) horses.push({ name, number, sire, dam, nameEl: a });
           break;
         }
       }
@@ -151,7 +155,7 @@
     g.members.forEach(h => {
       const b = document.createElement('span');
       b.className = 'kyodai-badge';
-      b.textContent = (g.type === 'dam' ? '母' : '父') + ':' + g.label;
+      b.textContent = (h.number ? h.number + '番 ' : '') + (g.type === 'dam' ? '母' : '父') + ':' + g.label;
       b.style.cssText = 'display:inline-block;margin-left:6px;padding:1px 6px;' +
         'border-radius:9px;font-size:11px;font-weight:bold;color:#fff;' +
         'vertical-align:middle;background:' + g.color + ';';
@@ -180,7 +184,7 @@
       html += '<div style="margin-bottom:8px;border-left:4px solid ' + g.color + ';padding-left:8px;">' +
         '<b>' + (g.type === 'dam' ? '母' : '父') + '：' + g.label + '</b><br>' +
         '<span style="color:#666;font-size:11px;">' + typeLabel + '</span><br>' +
-        g.members.map(m => m.name).join('、') + '</div>';
+        g.members.map(m => (m.number ? m.number + '番 ' : '') + m.name).join('、') + '</div>';
     });
   }
   panel.innerHTML = html;
