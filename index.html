@@ -200,7 +200,7 @@
   const sectionHtml = (title, groups) => groups.length
     ? '<div style="margin-top:10px;"><b style="font-size:14px;">' + title + '：' + groups.length + '組</b>' + groups.map(groupHtml).join('') + '</div>' : '';
   let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-    '<strong>兄弟馬あり：' + shown.length + '組</strong>' +
+    '<strong>兄弟馬：' + shown.length + '組</strong>' +
     '<button id="kyodai-close" style="border:none;background:#eee;border-radius:4px;cursor:pointer;padding:2px 8px;">×</button></div>';
   if (!shown.length) {
     html += 'このレースに同父・同母の馬はいません。';
