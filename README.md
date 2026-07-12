@@ -2,6 +2,8 @@
 
 JRA公式・地方競馬情報サイトの出馬表で、同じレースに出走する兄弟馬を確認するブックマークレットです。
 
+**配布ページ： [https://doujimakobo.github.io/keiba-siblings/](https://doujimakobo.github.io/keiba-siblings/)**
+
 ## できること
 
 - **全兄弟**（父・母とも同じ）
