@@ -132,7 +132,7 @@
   const groupHtml = g => '<div style="margin:8px 0;border-left:4px solid ' + g.color + ';padding:5px 8px;">' +
     '<b>' + relationLabel(g) + '</b><br>' +
     g.members.map(m => '<span style="display:inline-block;margin:3px 8px 0 0;">' +
-      '<b style="font-size:16px;">' + (m.number ? m.number + '番' : '') + '</b> ' + m.name + '</span>').join('') + '</div>';
+      '<b style="font-size:16px;">' + (m.number || '') + '</b> ' + m.name + '</span>').join('') + '</div>';
   let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
     '<strong>兄弟馬あり：' + found.length + '組</strong>' +
     '<button id="kyodai-close" style="border:none;background:#eee;border-radius:4px;cursor:pointer;padding:2px 8px;">×</button></div>';
