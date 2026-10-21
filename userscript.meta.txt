@@ -1,0 +1,17 @@
+// ==UserScript==
+// @name         出馬表 兄弟チェッカー（JRA・地方競馬）
+// @namespace    https://github.com/DoujimaKobo/keiba-siblings
+// @version      1.0.0
+// @description  出馬表を開くと、同じレースの全兄弟・異父兄弟・異母兄弟を馬番・馬名・性別付きで自動表示します。
+// @author       DoujimaKobo
+// @match        https://*.jra.go.jp/JRADB/accessD.html*
+// @match        https://*.jra.jp/JRADB/accessD.html*
+// @match        https://*.keiba.go.jp/KeibaWeb/TodayRaceInfo/DebaTable*
+// @run-at       document-idle
+// @grant        none
+// @noframes
+// @homepageURL  https://doujimakobo.github.io/keiba-siblings/
+// @supportURL   https://github.com/DoujimaKobo/keiba-siblings/issues
+// @updateURL    https://doujimakobo.github.io/keiba-siblings/keiba-siblings.user.js
+// @downloadURL  https://doujimakobo.github.io/keiba-siblings/keiba-siblings.user.js
+// ==/UserScript==
